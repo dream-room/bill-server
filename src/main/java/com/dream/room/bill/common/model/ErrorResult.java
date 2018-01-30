@@ -32,11 +32,13 @@ public class ErrorResult {
 
     @Override
     public String toString(){
-        StringBuilder builder = new StringBuilder("STATUS:");
-        builder.append(StringUtils.isEmpty(status)?HttpStatus.INTERNAL_SERVER_ERROR.value():status.value());
-        if (!StringUtils.isEmpty(code)){
-            builder.append(" CODE:").append(code);
+        HttpStatus here = status;
+        if (here == null) {
+            here = HttpStatus.INTERNAL_SERVER_ERROR;
         }
+        StringBuilder builder = new StringBuilder("STATUS:");
+        builder.append(here.getReasonPhrase());
+        builder.append(" CODE:").append(StringUtils.isEmpty(code)?here.value():code);
         if (!StringUtils.isEmpty(title)){
             builder.append(" TITLE:").append(title);
         }
