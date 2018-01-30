@@ -2,6 +2,10 @@ package com.dream.room.bill.service;
 
 import com.dream.room.bill.entity.User;
 import com.dream.room.bill.repository.UserRepository;
+import com.dream.room.bill.service.base.BaseCrudService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,17 +18,14 @@ import java.util.List;
  * 2018/1/29.
  */
 @Service
-public class UserService {
+public class UserService extends BaseCrudService<User,Long,UserRepository> {
 
     @Resource
     private UserRepository userRepository;
 
-    public List<User> findAll(){
-        return userRepository.findAll();
-    }
-
-    public User save(User user){
-        return userRepository.saveAndFlush(user);
+    @Override
+    public Page<User> findAll(Example<User> example, Pageable pageable) {
+        return null;
     }
 
     @Transactional
