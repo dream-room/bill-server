@@ -54,7 +54,7 @@ public abstract class BaseCrudService<T, ID, R extends MyCrudRepository<T,ID>> {
         return repository.findAllById(ids);
     }
 
-    public Page<T> findAll(Example<T> example, PageQueryDto dto){
+    public <Q extends PageQueryDto> Page<T> findAll(Example<T> example, Q dto){
         if (StringUtils.isEmpty(dto.getSort())){
             return repository.findAll(example,PageRequest.of(dto.getPage(),dto.getSize()));
         }
