@@ -1,11 +1,11 @@
 package com.dream.room.bill.service.base;
 
+import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.common.model.ErrorResult;
 import com.dream.room.bill.repository.base.MyCrudRepository;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -54,6 +54,13 @@ public abstract class BaseCrudService<T, ID, R extends MyCrudRepository<T,ID>> {
         return repository.findAllById(ids);
     }
 
-    public abstract Page<T> findAll(Example<T> example, Pageable pageable);
+    public Page<T> findAll(Example<T> example, PageQueryDto dto){
+        if (StringUtils.isEmpty(dto.getSort())){
+            return repository.findAll(example,PageRequest.of(dto.getPage(),dto.getSize()));
+        }
+        Sort.Direction direction = "desc".equals(dto.getDirection())?Sort.Direction.DESC:Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, dto.getSort());
+        return repository.findAll(example,PageRequest.of(dto.getPage(),dto.getSize(),sort));
+    }
 
 }

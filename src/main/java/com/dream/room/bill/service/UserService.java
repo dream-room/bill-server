@@ -1,8 +1,10 @@
 package com.dream.room.bill.service;
 
+import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.entity.User;
 import com.dream.room.bill.repository.UserRepository;
 import com.dream.room.bill.service.base.BaseCrudService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +25,10 @@ public class UserService extends BaseCrudService<User,Long,UserRepository> {
     @Resource
     private UserRepository userRepository;
 
-    @Override
-    public Page<User> findAll(Example<User> example, Pageable pageable) {
-        return null;
+    public Page<User> findAll(PageQueryDto dto) {
+        User user = new User();
+        BeanUtils.copyProperties(dto,user);
+        return findAll(Example.of(user),dto);
     }
 
     @Transactional

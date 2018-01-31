@@ -1,7 +1,11 @@
 package com.dream.room.bill.controller;
 
+import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.entity.User;
 import com.dream.room.bill.service.UserService;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +29,11 @@ public class UserController {
     @GetMapping("all")
     public List<User> findAll(){
         return userService.findAll();
+    }
+
+    @GetMapping
+    public Page<User> findAll(PageQueryDto dto) {
+        return userService.findAll(dto);
     }
 
     @GetMapping("{id}")
