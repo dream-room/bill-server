@@ -31,7 +31,7 @@ public class Swagger2 {
     }
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Asset APIs Doc")
+                .title("Bill Server APIs Doc")
                 .description("接口文档")
                 .contact(new Contact("MrTT","无","jiang.taojie@foxmail.com"))
                 .version("0.1")
