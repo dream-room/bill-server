@@ -1,6 +1,6 @@
 package com.dream.room.bill.repository.base;
 
-import com.dream.room.bill.entity.User;
+import com.dream.room.bill.common.model.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -9,5 +9,5 @@ import org.springframework.data.repository.NoRepositoryBean;
  * 2017/9/28.
  */
 @NoRepositoryBean
-public interface MyCrudRepository<T, ID> extends JpaRepository<T, ID> {
+public interface MyCrudRepository<T extends BaseEntity, ID> extends JpaRepository<T, ID> {
 }

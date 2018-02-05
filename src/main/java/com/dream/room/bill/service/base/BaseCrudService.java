@@ -1,10 +1,13 @@
 package com.dream.room.bill.service.base;
 
 import com.dream.room.bill.common.PageQueryDto;
+import com.dream.room.bill.common.model.BaseEntity;
 import com.dream.room.bill.common.model.ErrorResult;
 import com.dream.room.bill.repository.base.MyCrudRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -15,9 +18,9 @@ import java.util.Optional;
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2018/1/30.
  */
-public abstract class BaseCrudService<T, ID, R extends MyCrudRepository<T,ID>> {
+public abstract class BaseCrudService<T extends BaseEntity, ID, R extends MyCrudRepository<T,ID>> {
 
-    @Resource
+    @Autowired
     private R repository;
 
     public R getRepository() {
@@ -56,7 +59,7 @@ public abstract class BaseCrudService<T, ID, R extends MyCrudRepository<T,ID>> {
 
     public <Q extends PageQueryDto> Page<T> findAll(Example<T> example, Q dto){
         if (StringUtils.isEmpty(dto.getSort())){
-            return repository.findAll(example,PageRequest.of(dto.getPage(),dto.getSize()));
+            return repository.findAll(example, PageRequest.of(dto.getPage(), dto.getSize()));
         }
         Sort.Direction direction = "desc".equals(dto.getDirection())?Sort.Direction.DESC:Sort.Direction.ASC;
         Sort sort = Sort.by(direction, dto.getSort());

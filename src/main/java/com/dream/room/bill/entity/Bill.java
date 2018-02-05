@@ -7,11 +7,9 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -38,5 +36,7 @@ public class Bill extends BaseEntity {
     //订单名称
     @Column(nullable = false)
     private String name;
+    @OneToMany(mappedBy = "billNo")
+    private List<BillDetail> details;
 
 }

@@ -13,6 +13,9 @@ import org.springframework.data.repository.query.Param;
  */
 public interface UserRepository extends MyCrudRepository<User,Long> {
 
+    /**
+     * 修改密码
+     */
     @Modifying
     @Query("update User u set u.password = :password where u.no = :no")
     int updatePassword(@Param("no") String no,@Param("password") String password);
