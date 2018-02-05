@@ -39,5 +39,8 @@ public class Bill extends BaseEntity {
     private String name;
     @OneToMany(mappedBy = "billNo")
     private List<BillDetail> details;
+    //订单状态 1：正常 2：作废
+    @Column(nullable = false, columnDefinition = "tinyint(4) default 1")
+    private Integer status;
 
 }
