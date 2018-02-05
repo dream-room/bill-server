@@ -17,6 +17,7 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
+@JsonIgnoreProperties(value = {"details"}, allowSetters = true)
 @Entity
 public class Bill extends BaseEntity {
 
