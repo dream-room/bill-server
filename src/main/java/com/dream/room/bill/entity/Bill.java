@@ -22,7 +22,7 @@ import java.util.List;
 public class Bill extends BaseEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
