@@ -29,6 +29,7 @@ public class IndexController {
         Map<String,String> map = new HashMap<>();
         map.put("info","Server run okay!");
         map.put("rest-login-url","/login/rest");
+        map.put("rest-principal","/login/principal");
         map.put("doc-url","/swagger-ui.html");
         return map;
     }
