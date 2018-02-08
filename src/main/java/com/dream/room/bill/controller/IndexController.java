@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -21,8 +23,12 @@ public class IndexController {
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/")
-    public String ok(){
-        return "Server run okay!";
+    public Map<String,String> ok(){
+        Map<String,String> map = new HashMap<>();
+        map.put("info","Server run okay!");
+        map.put("rest-login-url","/login/rest");
+        map.put("doc-url","/swagger-ui.html");
+        return map;
     }
 
     @PostMapping("/login/rest")
