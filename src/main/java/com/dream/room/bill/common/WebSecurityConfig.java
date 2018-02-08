@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/","/login/rest").permitAll()
                 //.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 //.antMatchers("/swagger-ui.html","/**/*.js","/**/*.css").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
                 .cors().disable()
