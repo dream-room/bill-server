@@ -2,7 +2,6 @@ package com.dream.room.bill.repository;
 
 import com.dream.room.bill.entity.User;
 import com.dream.room.bill.repository.base.MyCrudRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +18,7 @@ public interface UserRepository extends MyCrudRepository<User,Long> {
     @Modifying
     @Query("update User u set u.password = :password where u.no = :no")
     int updatePassword(@Param("no") String no,@Param("password") String password);
+
+    User findByNo(String no);
 
 }
