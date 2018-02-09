@@ -33,10 +33,10 @@ public class Swagger2 {
         return new ApiInfoBuilder()
                 .title("Bill Server APIs Doc")
                 .description("接口文档")
-                .contact(new Contact("MrTT","无","jiang.taojie@foxmail.com"))
+                .contact(new Contact("MrTT","https://github.com/dream-room/bill-server","jiang.taojie@foxmail.com"))
                 .version("0.1")
                 .license("MIT")
-                //.licenseUrl("https://github.com/JiangTJ/enterpriseAssetManagement/blob/master/LICENSE")
+                .licenseUrl("https://github.com/dream-room/bill-server/blob/master/LICENSE")
                 //.extensions()
                 .build();
     }
