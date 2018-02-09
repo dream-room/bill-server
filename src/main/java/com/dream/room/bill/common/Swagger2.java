@@ -35,7 +35,7 @@ public class Swagger2 {
                 .description("接口文档")
                 .contact(new Contact("MrTT","https://github.com/dream-room/bill-server","jiang.taojie@foxmail.com"))
                 .version("0.1")
-                .license("MIT")
+                .license("Apache License 2.0")
                 .licenseUrl("https://github.com/dream-room/bill-server/blob/master/LICENSE")
                 //.extensions()
                 .build();
