@@ -1,6 +1,7 @@
 package com.dream.room.bill.controller;
 
 import com.dream.room.bill.entity.User;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -35,6 +36,7 @@ public class IndexController {
     }
 
     @PostMapping("/login/rest")
+    @ApiOperation(value = "Rest登录接口")
     public String login(@RequestBody User user){
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getNo(),user.getPassword());
         Authentication authenticate = authenticationManager.authenticate(token);
@@ -46,6 +48,7 @@ public class IndexController {
     }
 
     @PostMapping("/login/principal")
+    @ApiOperation(value = "Rest获取登录用户接口")
     public Map<String,Object> check(){
         Map<String,Object> map = new HashMap<>();
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
