@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,7 +30,14 @@ public class ResultExceptionHandler {
         else if (e instanceof DataIntegrityViolationException){
             result = ErrorResult.builder()
                     .status(HttpStatus.BAD_REQUEST)
-                    .title("数据重复！")
+                    .title("请求数据重复！")
+                    .message(e.getMessage())
+                    .build();
+        }
+        else if (e instanceof HttpMessageNotReadableException){
+            result = ErrorResult.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .title("请求数据不合法！")
                     .message(e.getMessage())
                     .build();
         }
