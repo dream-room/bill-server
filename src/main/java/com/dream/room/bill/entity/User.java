@@ -50,6 +50,7 @@ public class User extends BaseEntity implements UserDetails {
     @ApiModelProperty(value = "密码", required = true)
     private String password;
 
+    @Column
     @ApiModelProperty(value = "描述", allowEmptyValue = true)
     private String description;
 

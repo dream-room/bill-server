@@ -1,6 +1,7 @@
 package com.dream.room.bill.service;
 
 import com.dream.room.bill.common.PageQueryDto;
+import com.dream.room.bill.common.utils.RandomStringUtils;
 import com.dream.room.bill.entity.Bill;
 import com.dream.room.bill.entity.BillDetail;
 import com.dream.room.bill.repository.BillDetailRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -26,6 +28,14 @@ public class BillService extends BaseCrudService<Bill,Long,BillRepository> {
     private BillRepository billRepository;
     @Resource
     private BillDetailRepository billDetailRepository;
+
+    @Override
+    public Bill save(Bill entity) {
+        if (StringUtils.isEmpty(entity.getNo())){
+            entity.setNo(RandomStringUtils.getNextVal());
+        }
+        return super.save(entity);
+    }
 
     public Page<Bill> findAll(PageQueryDto dto) {
         Bill bill = new Bill();
