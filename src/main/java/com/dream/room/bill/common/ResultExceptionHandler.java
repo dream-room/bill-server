@@ -2,7 +2,7 @@ package com.dream.room.bill.common;
 
 import com.dream.room.bill.common.model.ErrorResult;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -21,11 +21,19 @@ public class ResultExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public ResponseEntity<ErrorResult> handle(RuntimeException e){
+        log.error(e.getMessage());
         ErrorResult result;
         if (e instanceof BillException){
             result = ((BillException) e).getResult();
-        } else {
-            log.error(e.getMessage());
+        }
+        else if (e instanceof DataIntegrityViolationException){
+            result = ErrorResult.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .title("数据重复！")
+                    .message(e.getMessage())
+                    .build();
+        }
+        else {
             result = ErrorResult.builder()
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .title("系统异常！")
