@@ -1,6 +1,7 @@
 package com.dream.room.bill.common;
 
 import com.dream.room.bill.service.MyUserDetailsService;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,8 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/","/login/rest","/login/principal").permitAll()
-                //.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                //.antMatchers("/swagger-ui.html","/**/*.js","/**/*.css").permitAll()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                //.antMatchers("/swagger-ui.html").permitAll()
                 .anyRequest().permitAll()
                 .and()
                 .csrf().disable()
