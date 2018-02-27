@@ -13,7 +13,3 @@ release-build:
   only:
     - /^release-.*$/
 
-  only:
-    - master
-
-
