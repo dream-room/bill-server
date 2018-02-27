@@ -1,0 +1,19 @@
+image: maven:3-jdk-8
+
+stages:
+  - build
+#  - package
+
+release-build:
+  stage: build
+  script: "mvn package -B -Dmaven.test.skip=true"
+  artifacts:
+    paths:
+      - target/bill-server.jar
+  only:
+    - /^release-.*$/
+
+  only:
+    - master
+
+
