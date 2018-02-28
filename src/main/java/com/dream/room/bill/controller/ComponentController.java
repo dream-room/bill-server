@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -26,6 +27,12 @@ public class ComponentController {
     @ApiOperation(value = "查询零件信息", notes = "分页查询")
     public Page<Component> findAll(ComponentDto dto) {
         return componentService.findAll(dto);
+    }
+
+    @GetMapping("all")
+    @ApiOperation(value = "查询全部零件")
+    public List<Component> findAll() {
+        return componentService.findAll();
     }
 
     @GetMapping("{id}")
