@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
@@ -41,5 +42,9 @@ public class Component extends BaseEntity {
     @Column(nullable = false)
     @ApiModelProperty(value = "库存", required = true)
     private Integer num;
+
+    @Column(nullable = false,  precision = 7, scale = 2)
+    @ApiModelProperty(value = "通常价", required = true)
+    private BigDecimal price;
 
 }

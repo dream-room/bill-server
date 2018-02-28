@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.Instant;
 
 /**
@@ -18,11 +19,11 @@ import java.time.Instant;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(indexes = {
+/*@Table(indexes = {
         @Index(name = "un_goods_component", columnList = "goodsId,componentId", unique = true)
-})
-@ApiModel(value = "GoodsComponentRelation", description = "物品零件关联表")
-public class GoodsComponentRelation extends BaseEntity {
+})*/
+@ApiModel(value = "GoodsComponent", description = "物品零件关联表")
+public class GoodsComponent extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +47,15 @@ public class GoodsComponentRelation extends BaseEntity {
     private Long componentId;
 
     @Column(nullable = false)
+    @ApiModelProperty(value = "零件名称", required = true)
+    private String componentName;
+
+    @Column(nullable = false)
     @ApiModelProperty(value = "数量", required = true)
     private Integer num;
+
+    @Column(nullable = false,  precision = 7, scale = 2)
+    @ApiModelProperty(value = "价格", required = true)
+    private BigDecimal price;
+
 }
