@@ -1,6 +1,6 @@
 package com.dream.room.bill.controller;
 
-import com.dream.room.bill.common.PageQueryDto;
+import com.dream.room.bill.dto.ComponentDto;
 import com.dream.room.bill.entity.Component;
 import com.dream.room.bill.service.ComponentService;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +24,7 @@ public class ComponentController {
 
     @GetMapping
     @ApiOperation(value = "查询零件信息", notes = "分页查询")
-    public Page<Component> findAll(PageQueryDto dto) {
+    public Page<Component> findAll(ComponentDto dto) {
         return componentService.findAll(dto);
     }
 

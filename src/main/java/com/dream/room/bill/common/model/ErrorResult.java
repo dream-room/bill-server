@@ -25,6 +25,7 @@ public class ErrorResult {
     private String code;
     private String title;
     private String message;
+    private Object object;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime time = LocalDateTime.now();
