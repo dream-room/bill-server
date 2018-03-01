@@ -50,6 +50,13 @@ public class GoodsController {
         return goodsService.save(goodsAddDto);
     }
 
+    @PutMapping("{id}")
+    @ApiOperation(value = "修改物品")
+    public Goods update(@PathVariable Long id, @RequestBody GoodsAddDto goodsAddDto){
+        goodsAddDto.setId(id);
+        return goodsService.save(goodsAddDto);
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除物品")
     public void deleteById(HttpServletResponse response, @PathVariable Long id){

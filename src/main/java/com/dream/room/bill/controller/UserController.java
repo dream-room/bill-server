@@ -49,6 +49,13 @@ public class UserController {
         return userService.save(user);
     }
 
+    @PutMapping("{id}")
+    @ApiOperation(value = "修改用户")
+    public User update(@PathVariable Long id, @RequestBody User user){
+        user.setId(id);
+        return userService.save(user);
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除用户")
     public void deleteById(HttpServletResponse response, @PathVariable Long id){

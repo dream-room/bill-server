@@ -48,6 +48,13 @@ public class ComponentController {
         return componentService.save(component);
     }
 
+    @PutMapping("{id}")
+    @ApiOperation(value = "修改零件")
+    public Component update(@PathVariable Long id, @RequestBody Component component){
+        component.setId(id);
+        return componentService.save(component);
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除零件")
     public void deleteById(HttpServletResponse response, @PathVariable Long id){

@@ -49,6 +49,13 @@ public class BillController {
         return billService.save(bill);
     }
 
+    @PutMapping("{id}")
+    @ApiOperation(value = "修改账单")
+    public Bill update(@PathVariable Long id, @RequestBody Bill bill){
+        bill.setId(id);
+        return billService.save(bill);
+    }
+
     @DeleteMapping("{id}")
     @ApiOperation(value = "作废账单")
     public void deleteById(HttpServletResponse response, @PathVariable Long id){
