@@ -12,4 +12,9 @@ import java.util.List;
 public interface GoodsComponentRepository extends MyCrudRepository<GoodsComponent,Long> {
 
     List<GoodsComponent> findAllByComponentId(Long componentId);
+
+    List<GoodsComponent> findAllByGoodsId(Long goodsId);
+
+    void deleteAllByGoodsId(Long goodsId);
+
 }

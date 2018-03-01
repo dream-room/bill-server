@@ -1,7 +1,9 @@
 package com.dream.room.bill.controller;
 
 import com.dream.room.bill.common.PageQueryDto;
+import com.dream.room.bill.dto.GoodsAddDto;
 import com.dream.room.bill.entity.Goods;
+import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.service.GoodsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.data.domain.Page;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -34,11 +37,17 @@ public class GoodsController {
         return goodsService.findById(id);
     }
 
+    @GetMapping("{id}/components")
+    @ApiOperation(value = "查询物品零件信息")
+    public List<GoodsComponent> findComponentsById(@PathVariable Long id){
+        return goodsService.findComponentsById(id);
+    }
+
     @PostMapping
     @ApiOperation(value = "添加/修改物品")
-    public Goods save(HttpServletResponse response, @RequestBody Goods goods){
+    public Goods save(HttpServletResponse response, @RequestBody GoodsAddDto goodsAddDto){
         response.setStatus(HttpStatus.CREATED.value());
-        return goodsService.save(goods);
+        return goodsService.save(goodsAddDto);
     }
 
     @DeleteMapping("{id}")
