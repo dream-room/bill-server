@@ -22,7 +22,7 @@ import java.util.List;
  * 2018/2/5.
  */
 @Service
-public class BillService extends BaseCrudService<Bill,Long,BillRepository> {
+public class BillService extends BaseCrudService<Bill,BillRepository> {
 
     @Resource
     private BillRepository billRepository;

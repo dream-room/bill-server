@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2017/9/8.
  */
-public interface UserRepository extends MyCrudRepository<User,Long> {
+public interface UserRepository extends MyCrudRepository<User> {
 
     /**
      * 修改密码

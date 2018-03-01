@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2018/2/5.
  */
-public interface BillRepository extends MyCrudRepository<Bill,Long> {
+public interface BillRepository extends MyCrudRepository<Bill> {
 
     @Modifying
     @Query("update Bill set status = :status where id = :id")

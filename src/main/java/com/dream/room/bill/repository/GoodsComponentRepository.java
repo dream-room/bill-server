@@ -9,7 +9,7 @@ import java.util.List;
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2018/2/26.
  */
-public interface GoodsComponentRepository extends MyCrudRepository<GoodsComponent,Long> {
+public interface GoodsComponentRepository extends MyCrudRepository<GoodsComponent> {
 
     List<GoodsComponent> findAllByComponentId(Long componentId);
 

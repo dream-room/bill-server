@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * 2018/2/26.
  */
 @Service
-public class GoodsService extends BaseCrudService<Goods,Long,GoodsRepository> {
+public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
 
     @Resource
     private GoodsRepository goodsRepository;

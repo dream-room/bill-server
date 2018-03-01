@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * 2018/2/26.
  */
 @Service
-public class ComponentService extends BaseCrudService<Component,Long,ComponentRepository> {
+public class ComponentService extends BaseCrudService<Component,ComponentRepository> {
 
     @Resource
     private ComponentRepository componentRepository;

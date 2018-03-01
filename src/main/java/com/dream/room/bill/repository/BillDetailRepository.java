@@ -9,7 +9,7 @@ import java.util.List;
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2018/2/5.
  */
-public interface BillDetailRepository extends MyCrudRepository<BillDetail,Long> {
+public interface BillDetailRepository extends MyCrudRepository<BillDetail> {
 
     List<BillDetail> findAllByBillNo(String billNo);
 

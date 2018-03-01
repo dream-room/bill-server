@@ -9,5 +9,5 @@ import org.springframework.data.repository.NoRepositoryBean;
  * 2017/9/28.
  */
 @NoRepositoryBean
-public interface MyCrudRepository<T extends BaseEntity, ID> extends JpaRepository<T, ID> {
+public interface MyCrudRepository<T extends BaseEntity> extends JpaRepository<T, Long> {
 }

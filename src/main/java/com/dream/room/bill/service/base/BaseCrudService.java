@@ -18,7 +18,7 @@ import java.util.List;
  * Created by MrTT (jiang.taojie@foxmail.com)
  * 2018/1/30.
  */
-public abstract class BaseCrudService<T extends BaseEntity, ID, R extends MyCrudRepository<T,ID>> {
+public abstract class BaseCrudService<T extends BaseEntity, R extends MyCrudRepository<T>> {
 
     @Autowired
     private R repository;
@@ -35,7 +35,7 @@ public abstract class BaseCrudService<T extends BaseEntity, ID, R extends MyCrud
         return repository.saveAll(list);
     }
 
-    public void deleteById(ID id){
+    public void deleteById(Long id){
         repository.deleteById(id);
     }
 
@@ -43,7 +43,7 @@ public abstract class BaseCrudService<T extends BaseEntity, ID, R extends MyCrud
         return repository.findAll();
     }
 
-    public T findById(ID id){
+    public T findById(Long id){
         return repository.findById(id)
                 .orElseThrow(() -> ErrorResult.builder()
                         .status(HttpStatus.NOT_FOUND)
@@ -53,7 +53,7 @@ public abstract class BaseCrudService<T extends BaseEntity, ID, R extends MyCrud
                 );
     }
 
-    public List<T> findAllById(Iterable<ID> ids){
+    public List<T> findAllById(Iterable<Long> ids){
         return repository.findAllById(ids);
     }
 
