@@ -5,12 +5,10 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.math.BigDecimal;
-import java.time.Instant;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -21,19 +19,6 @@ import java.time.Instant;
 @Entity
 @ApiModel(value = "BillDetail", description = "账单明细")
 public class BillDetail extends BaseEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(value = "ID", readOnly = true)
-    private Long id;
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    @ApiModelProperty(value = "创建时间", readOnly = true)
-    private Instant createTime;
-    @UpdateTimestamp
-    @Column(nullable = false)
-    @ApiModelProperty(value = "修改时间", readOnly = true)
-    private Instant updateTime;
 
     @Column(nullable = false, length = 64)
     @ApiModelProperty(value = "订单编号", required = true)

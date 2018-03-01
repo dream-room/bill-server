@@ -6,13 +6,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
-import java.time.Instant;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.util.Collection;
 
 /**
@@ -25,18 +23,6 @@ import java.util.Collection;
 @Entity
 @ApiModel(value = "User", description = "用户")
 public class User extends BaseEntity implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(value = "ID", readOnly = true)
-    private Long id;
-    @CreationTimestamp
-    @Column(updatable = false)
-    @ApiModelProperty(value = "创建时间", readOnly = true)
-    private Instant createTime;
-    @UpdateTimestamp
-    @ApiModelProperty(value = "修改时间", readOnly = true)
-    private Instant updateTime;
 
     @Column(unique = true, nullable = false, length = 64)
     @ApiModelProperty(value = "编号", required = true)
