@@ -29,7 +29,7 @@ public class Component extends BaseEntity {
     private Integer num;
 
     @Column(nullable = false,  precision = 7, scale = 2)
-    @ApiModelProperty(value = "通常价", required = true)
+    @ApiModelProperty(value = "价格", required = true)
     private BigDecimal price;
 
 }

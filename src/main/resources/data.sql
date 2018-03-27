@@ -21,5 +21,6 @@ INSERT INTO `component` (`id`, `create_time`, `name`, `num`, `price`, `update_ti
 INSERT INTO `goods` (`id`, `create_time`, `name`, `status`, `update_time`) VALUES ('1', '2018-02-28 15:17:18', 'cc', '1', '2018-02-28 15:17:20');
 
 -- add goodsComponent
-INSERT INTO `goods_component` (`id`, `component_id`, `component_name`, `create_time`, `goods_id`, `num`, `price`, `update_time`) VALUES ('1', '1', 'a1', '2018-02-28 15:17:56', '1', '2', '1.50', '2018-02-28 15:17:59');
+-- INSERT INTO `goods_component` (`id`, `component_id`, `component_name`, `create_time`, `goods_id`, `num`, `price`, `update_time`) VALUES ('1', '1', 'a1', '2018-02-28 15:17:56', '1', '2', '1.50', '2018-02-28 15:17:59');
+INSERT INTO `goods_component` (`id`, `component_id`, `create_time`, `goods_id`, `num`, `update_time`) VALUES ('1', '1', '2018-02-28 15:17:56', '1', '2', '2018-02-28 15:17:59');
 

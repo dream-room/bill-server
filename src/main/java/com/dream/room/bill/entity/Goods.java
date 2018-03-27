@@ -31,7 +31,6 @@ public class Goods extends BaseEntity {
     @ApiModelProperty(value = "状态 1：正常 2：禁用", required = true)
     private Integer status;
 
-
     @OneToMany(mappedBy = "goodsId")
     @ApiModelProperty(value = "零件明细", readOnly = true)
     private List<GoodsComponent> goodsComponents;

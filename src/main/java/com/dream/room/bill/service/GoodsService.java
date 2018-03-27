@@ -2,6 +2,7 @@ package com.dream.room.bill.service;
 
 import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.dto.GoodsAddDto;
+import com.dream.room.bill.dto.GoodsComponentResultDto;
 import com.dream.room.bill.entity.Component;
 import com.dream.room.bill.entity.Goods;
 import com.dream.room.bill.entity.GoodsComponent;
@@ -40,8 +41,23 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
         return findAll(Example.of(goods),dto);
     }
 
-    public List<GoodsComponent> findComponentsById(Long id) {
-        return goodsComponentRepository.findAllByGoodsId(id);
+    public List<GoodsComponentResultDto> findComponentsById(Long id) {
+        List<GoodsComponent> goodsComponents = goodsComponentRepository.findAllByGoodsId(id);
+        List<Long> ids = goodsComponents.stream()
+                .map(GoodsComponent::getComponentId)
+                .collect(Collectors.toList());
+        List<Component> components = componentRepository.findAllById(ids);
+        return goodsComponents.stream().map(item -> {
+            GoodsComponentResultDto dto = new GoodsComponentResultDto();
+            BeanUtils.copyProperties(item,dto);
+            for (Component component: components) {
+                if (component.getId().equals(item.getComponentId())) {
+                    dto.setComponent(component);
+                    return dto;
+                }
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @Transactional
@@ -56,14 +72,11 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
         }
         //保存零件
         final Goods finalGoods = goods;
-        List<Component> components = componentRepository.findAllById(componentsIds);
-        List<GoodsComponent> collect = components.stream()
+        List<GoodsComponent> collect = componentsIds.stream()
                 .map(item -> GoodsComponent.builder()
                         .goodsId(finalGoods.getId())
-                        .componentId(item.getId())
-                        .componentName(item.getName())
+                        .componentId(item)
                         .num(1)
-                        .price(item.getPrice())
                         .build())
                 .collect(Collectors.toList());
         goodsComponentRepository.saveAll(collect);
