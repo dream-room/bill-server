@@ -15,5 +15,7 @@ public class ComponentDto extends PageQueryDto {
 
     @ApiParam(value = "名称")
     private String name;
+    @ApiParam(value = "类型，1：机芯，2：气压表，3：压力表")
+    private Integer type;
 
 }
