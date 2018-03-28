@@ -2,7 +2,6 @@ package com.dream.room.bill.service;
 
 import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.dto.GoodsAddDto;
-import com.dream.room.bill.dto.GoodsComponentResultDto;
 import com.dream.room.bill.entity.Component;
 import com.dream.room.bill.entity.Goods;
 import com.dream.room.bill.entity.GoodsComponent;
@@ -18,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,23 +41,8 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
         return findAll(Example.of(goods),dto);
     }
 
-    public List<GoodsComponentResultDto> findComponentsById(Long id) {
-        List<GoodsComponent> goodsComponents = goodsComponentRepository.findAllByGoodsId(id);
-        List<Long> ids = goodsComponents.stream()
-                .map(GoodsComponent::getComponentId)
-                .collect(Collectors.toList());
-        List<Component> components = componentRepository.findAllById(ids);
-        return goodsComponents.stream().map(item -> {
-            GoodsComponentResultDto dto = new GoodsComponentResultDto();
-            BeanUtils.copyProperties(item,dto);
-            for (Component component: components) {
-                if (component.getId().equals(item.getComponentId())) {
-                    dto.setComponent(component);
-                    return dto;
-                }
-            }
-            return dto;
-        }).collect(Collectors.toList());
+    public List<GoodsComponent> findComponentsById(Long id) {
+        return goodsComponentRepository.findAllByGoodsId(id);
     }
 
     @Transactional
@@ -65,18 +50,27 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
         //保存物品
         Goods goods = new Goods();
         BeanUtils.copyProperties(goodsAddDto,goods);
-        goods = goodsRepository.save(goods);
         List<Long> componentsIds = goodsAddDto.getComponentsIds();
         if (CollectionUtils.isEmpty(componentsIds)) {
+            goods = goodsRepository.save(goods);
             return goods;
         }
         //保存零件
         final Goods finalGoods = goods;
-        List<GoodsComponent> collect = componentsIds.stream()
+        List<Component> components = componentRepository.findAllById(componentsIds);
+        BigDecimal price = components.stream()
+                .map(Component::getPrice)
+                .reduce(BigDecimal::add)
+                .orElse(new BigDecimal(0));
+        goods.setPrice(price);
+        goods = goodsRepository.save(goods);
+        List<GoodsComponent> collect = components.stream()
                 .map(item -> GoodsComponent.builder()
                         .goodsId(finalGoods.getId())
-                        .componentId(item)
+                        .componentId(item.getId())
+                        .componentName(item.getName())
                         .num(1)
+                        .price(item.getPrice())
                         .build())
                 .collect(Collectors.toList());
         goodsComponentRepository.saveAll(collect);

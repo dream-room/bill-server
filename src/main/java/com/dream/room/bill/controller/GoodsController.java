@@ -2,7 +2,6 @@ package com.dream.room.bill.controller;
 
 import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.dto.GoodsAddDto;
-import com.dream.room.bill.dto.GoodsComponentResultDto;
 import com.dream.room.bill.entity.Goods;
 import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.service.GoodsService;
@@ -40,7 +39,7 @@ public class GoodsController {
 
     @GetMapping("{id}/components")
     @ApiOperation(value = "查询物品零件信息")
-    public List<GoodsComponentResultDto> findComponentsById(@PathVariable Long id){
+    public List<GoodsComponent> findComponentsById(@PathVariable Long id){
         return goodsService.findComponentsById(id);
     }
 

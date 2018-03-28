@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -34,4 +35,8 @@ public class Goods extends BaseEntity {
     @OneToMany(mappedBy = "goodsId")
     @ApiModelProperty(value = "零件明细", readOnly = true)
     private List<GoodsComponent> goodsComponents;
+
+    @Column(nullable = false,  precision = 9, scale = 2)
+    @ApiModelProperty(value = "价格", required = true)
+    private BigDecimal price;
 }
