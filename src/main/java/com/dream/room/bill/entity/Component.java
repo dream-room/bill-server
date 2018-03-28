@@ -24,6 +24,10 @@ public class Component extends BaseEntity {
     @ApiModelProperty(value = "零件名称", required = true)
     private String name;
 
+    @Column(nullable = false, columnDefinition = "tinyint(4) default 1")
+    @ApiModelProperty(value = "类型，1：机芯，2：气压表，3：压力表", required = true)
+    private Integer type;
+
     @Column(nullable = false)
     @ApiModelProperty(value = "库存", required = true)
     private Integer num;
