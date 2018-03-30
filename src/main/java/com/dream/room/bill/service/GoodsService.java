@@ -1,8 +1,6 @@
 package com.dream.room.bill.service;
 
 import com.dream.room.bill.common.PageQueryDto;
-import com.dream.room.bill.dto.GoodsAddDto;
-import com.dream.room.bill.entity.Component;
 import com.dream.room.bill.entity.Goods;
 import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.repository.ComponentRepository;
@@ -14,12 +12,10 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -45,18 +41,16 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
         return goodsComponentRepository.findAllByGoodsId(id);
     }
 
+    @Override
     @Transactional
-    public Goods save(GoodsAddDto goodsAddDto) {
+    public Goods save(Goods goods) {
         //保存物品
-        Goods goods = new Goods();
-        BeanUtils.copyProperties(goodsAddDto,goods);
-        List<Long> componentsIds = goodsAddDto.getComponentsIds();
-        if (CollectionUtils.isEmpty(componentsIds)) {
-            goods = goodsRepository.save(goods);
-            return goods;
-        }
+        goods.setPrice(new BigDecimal(0));
+        goods = goodsRepository.save(goods);
+        return goods;
+
         //保存零件
-        final Goods finalGoods = goods;
+        /*final Goods finalGoods = goods;
         List<Component> components = componentRepository.findAllById(componentsIds);
         BigDecimal price = components.stream()
                 .map(Component::getPrice)
@@ -74,7 +68,7 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
                         .build())
                 .collect(Collectors.toList());
         goodsComponentRepository.saveAll(collect);
-        return goods;
+        return goods;*/
     }
 
     @Override

@@ -36,7 +36,7 @@ public class Goods extends BaseEntity {
     @ApiModelProperty(value = "零件明细", readOnly = true)
     private List<GoodsComponent> goodsComponents;
 
-    @Column(nullable = false,  precision = 9, scale = 2)
-    @ApiModelProperty(value = "价格", required = true)
+    @Column(nullable = false,  precision = 9, scale = 2, updatable = false)
+    @ApiModelProperty(value = "价格", readOnly = true)
     private BigDecimal price;
 }

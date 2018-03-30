@@ -1,7 +1,6 @@
 package com.dream.room.bill.controller;
 
 import com.dream.room.bill.common.PageQueryDto;
-import com.dream.room.bill.dto.GoodsAddDto;
 import com.dream.room.bill.entity.Goods;
 import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.service.GoodsService;
@@ -45,17 +44,16 @@ public class GoodsController {
 
     @PostMapping
     @ApiOperation(value = "添加/修改物品")
-    public Goods save(HttpServletResponse response, @RequestBody GoodsAddDto goodsAddDto){
+    public Goods save(HttpServletResponse response, @RequestBody Goods goods){
         response.setStatus(HttpStatus.CREATED.value());
-        return goodsService.save(goodsAddDto);
+        return goodsService.save(goods);
     }
 
     @PutMapping("{id}")
     @ApiOperation(value = "修改物品")
-    public Goods update(@PathVariable Long id, @RequestBody GoodsAddDto goodsAddDto){
-        goodsAddDto.setId(id);
-        goodsAddDto.setComponentsIds(null);
-        return goodsService.save(goodsAddDto);
+    public Goods update(@PathVariable Long id, @RequestBody Goods goods){
+        goods.setId(id);
+        return goodsService.save(goods);
     }
 
     @DeleteMapping("{id}")
