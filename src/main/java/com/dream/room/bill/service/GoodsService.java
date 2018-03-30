@@ -77,4 +77,17 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
         goodsComponentRepository.deleteAllByGoodsId(id);
         super.deleteById(id);
     }
+
+    @Transactional
+    public List<GoodsComponent> saveGoodsComponents(Long goodsId, List<GoodsComponent> components) {
+        goodsComponentRepository.deleteAllByGoodsId(goodsId);
+        components.forEach(item -> item.setGoodsId(goodsId));
+        List<GoodsComponent> goodsComponents = goodsComponentRepository.saveAll(components);
+        BigDecimal allPrice = goodsComponents.stream()
+                .map(item -> item.getPrice().multiply(BigDecimal.valueOf(item.getNum())))
+                .reduce(BigDecimal::add)
+                .orElse(new BigDecimal(0));
+        goodsRepository.updateGoodsPrice(goodsId, allPrice);
+        return goodsComponents;
+    }
 }

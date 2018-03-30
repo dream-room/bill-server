@@ -36,12 +36,6 @@ public class GoodsController {
         return goodsService.findById(id);
     }
 
-    @GetMapping("{id}/components")
-    @ApiOperation(value = "查询物品零件信息")
-    public List<GoodsComponent> findComponentsById(@PathVariable Long id){
-        return goodsService.findComponentsById(id);
-    }
-
     @PostMapping
     @ApiOperation(value = "添加/修改物品")
     public Goods save(HttpServletResponse response, @RequestBody Goods goods){
@@ -61,6 +55,18 @@ public class GoodsController {
     public void deleteById(HttpServletResponse response, @PathVariable Long id){
         response.setStatus(HttpStatus.NO_CONTENT.value());
         goodsService.deleteById(id);
+    }
+
+    @GetMapping("{id}/components")
+    @ApiOperation(value = "查询物品零件信息")
+    public List<GoodsComponent> findComponentsById(@PathVariable Long id){
+        return goodsService.findComponentsById(id);
+    }
+
+    @PostMapping("{goodsId}/components")
+    @ApiOperation(value = "添加物品零件")
+    public List<GoodsComponent> saveGoodsComponents(@PathVariable Long goodsId, @RequestBody List<GoodsComponent> components){
+        return goodsService.saveGoodsComponents(goodsId,components);
     }
 
 }
