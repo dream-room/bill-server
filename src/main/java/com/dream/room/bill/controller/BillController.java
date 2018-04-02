@@ -36,12 +36,6 @@ public class BillController {
         return billService.findAll(dto);
     }
 
-    @GetMapping("{no}/detail")
-    @ApiOperation(value = "查询账单明细")
-    public List<BillDetail> findDetails(@PathVariable String no) {
-        return billService.findDetails(no);
-    }
-
     @PostMapping
     @ApiOperation(value = "添加/修改账单")
     public Bill save(HttpServletResponse response, @RequestBody Bill bill){
@@ -61,6 +55,26 @@ public class BillController {
     public void cancel(HttpServletResponse response, @PathVariable Long id){
         response.setStatus(HttpStatus.NO_CONTENT.value());
         billService.cancel(id);
+    }
+
+    @GetMapping("{no}/detail")
+    @ApiOperation(value = "查询账单明细")
+    public List<BillDetail> findDetails(@PathVariable String no) {
+        return billService.findDetails(no);
+    }
+
+    @PostMapping("{no}/detail")
+    @ApiOperation(value = "保存账单明细")
+    public List<BillDetail> saveDetails(@PathVariable String no, @RequestBody BillDetail detail) {
+        return billService.findDetails(no);
+    }
+
+    @PutMapping("{no}/detail/{detailId}")
+    @ApiOperation(value = "修改账单明细")
+    public List<BillDetail> updateDetail(@PathVariable String no, @PathVariable Long detailId,
+                                         @RequestBody BillDetail detail) {
+        detail.setId(detailId);
+        return billService.findDetails(no);
     }
 
 }
