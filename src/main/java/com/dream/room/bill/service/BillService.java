@@ -51,4 +51,10 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
     public int updateStatus(Long id, int i) {
         return billRepository.updateStatus(id,i);
     }
+
+    @Transactional
+    public void cancel(Long id) {
+        billRepository.updateStatus(id,4);
+        billDetailRepository.cancelByBill(id);
+    }
 }
