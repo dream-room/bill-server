@@ -25,16 +25,16 @@ public class BillDetail extends BaseEntity {
     private String billNo;
 
     @Column(nullable = false, length = 64)
-    @ApiModelProperty(value = "存货编号", required = true)
-    private String productNo;
+    @ApiModelProperty(value = "货物ID", required = true)
+    private Long goodsId;
 
     @Column(nullable = false)
-    @ApiModelProperty(value = "产品名称", required = true)
-    private String productName;
+    @ApiModelProperty(value = "货物名称", required = true)
+    private String goodsName;
 
-    @Column(nullable = false)
-    @ApiModelProperty(value = "规格型号", required = true)
-    private String productModel;
+    @Column(columnDefinition = "text")
+    @ApiModelProperty(value = "货物明细", readOnly = true)
+    private String goodsDetail;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "数量", required = true)
@@ -47,5 +47,13 @@ public class BillDetail extends BaseEntity {
     @Column(nullable = false,  precision = 9, scale = 2)
     @ApiModelProperty(value = "总价", readOnly = true)
     private BigDecimal total;
+
+    @Column(nullable = false, columnDefinition = "tinyint(4) default 5")
+    @ApiModelProperty(value = "优先级（1-9），越小优先级越高，默认5", required = true)
+    private Integer priority;
+
+    @Column(nullable = false, columnDefinition = "tinyint(4) default 1")
+    @ApiModelProperty(value = "订单状态 1：编辑中 2：待发货 3：已发货 4：取消发货", required = true)
+    private Integer status;
 
 }
