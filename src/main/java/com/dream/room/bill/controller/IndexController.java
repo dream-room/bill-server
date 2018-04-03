@@ -2,6 +2,7 @@ package com.dream.room.bill.controller;
 
 import com.dream.room.bill.entity.User;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,6 +62,13 @@ public class IndexController {
         map.put("authentication","true");
         map.put("principal", principal);
         return map;
+    }
+
+    @GetMapping("/auth/fail")
+    @ApiOperation(value = "登陆失败接口")
+    public String authFail(HttpServletResponse response){
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        return "Maybe not auth!";
     }
 
 }

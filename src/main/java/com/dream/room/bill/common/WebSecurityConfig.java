@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import javax.annotation.Resource;
 
@@ -28,24 +28,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private MyUserDetailsService myUserDetailsService;
 
+    @Resource
+    private JwtFilter jwtFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/","/login/rest","/login/principal").permitAll()
+                .antMatchers("/","/login/rest","/login/principal","/auth/fail").permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 //.antMatchers("/swagger-ui.html").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
                 .cors().disable()
-                .formLogin().permitAll()
-                .and()
-                .logout()
-                //支持 get 请求
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", null))
-                .permitAll()
+                .addFilterBefore(jwtFilter,BasicAuthenticationFilter.class)
                 //开发暂时开启basic授权
-                .and().httpBasic();
+                .httpBasic();
     }
 
     @Override

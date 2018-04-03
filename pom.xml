@@ -24,6 +24,7 @@
 		<skipTests>true</skipTests>
 		<java.version>1.8</java.version>
 		<swagger2.version>2.8.0</swagger2.version>
+		<jjwt.version>0.9.0</jjwt.version>
 	</properties>
 
 	<dependencies>
@@ -62,6 +63,13 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+		<!-- jjwt -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
 
 		<!-- swagger -->
 		<dependency>
