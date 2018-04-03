@@ -1,5 +1,8 @@
 package com.dream.room.bill.controller;
 
+import com.dream.room.bill.common.BillException;
+import com.dream.room.bill.common.JwtAuthService;
+import com.dream.room.bill.common.model.ErrorResult;
 import com.dream.room.bill.entity.User;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -26,12 +29,14 @@ public class IndexController {
 
     @Resource
     private AuthenticationManager authenticationManager;
+    @Resource
+    private JwtAuthService jwtAuthService;
 
     @GetMapping("/")
     public Map<String,String> ok(){
         Map<String,String> map = new HashMap<>();
         map.put("info","Server run okay!");
-        map.put("rest-login-url","/login/rest");
+        map.put("auth-token","/auth/token");
         map.put("rest-principal","/login/principal");
         map.put("doc-url","/swagger-ui.html");
         return map;
@@ -69,6 +74,22 @@ public class IndexController {
     public String authFail(HttpServletResponse response){
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         return "Maybe not auth!";
+    }
+
+    @PostMapping("/auth/token")
+    @ApiOperation(value = "获取token接口")
+    public String authToken(@RequestBody User user){
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getNo(),user.getPassword());
+        Authentication authenticate = authenticationManager.authenticate(token);
+        if (authenticate.isAuthenticated()){
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
+            return jwtAuthService.createStringToken("admin");
+        }
+        throw ErrorResult.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .title("获取token失败")
+                .message("请确保用户名密码正确！")
+                .build().toException();
     }
 
 }

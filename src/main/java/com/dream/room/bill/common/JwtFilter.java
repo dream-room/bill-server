@@ -4,7 +4,9 @@ import com.dream.room.bill.common.model.ErrorResult;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -26,15 +28,27 @@ public class JwtFilter extends OncePerRequestFilter {
     @Resource
     private JwtAuthService jwtAuthService;
 
+    @Resource
+    private RequestMatcher authTokenMatchers;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+
+        //静态资源放行
+        if (PathRequest.toStaticResources().atCommonLocations().matches(httpServletRequest)) {
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            return;
+        }
+
+        //部分权限相关的放行
+        if (authTokenMatchers.matches(httpServletRequest)){
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            return;
+        }
         Jws<Claims> token = jwtAuthService.getToken(httpServletRequest);
         if (token == null) {
-            throw ErrorResult.builder()
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .title("授权失败")
-                    .message("未包含授权信息")
-                    .build().toException();
+            httpServletResponse.sendRedirect("/auth/fail");
+            return;
         }
         String subject = token.getBody().getSubject();
         log.error(subject);

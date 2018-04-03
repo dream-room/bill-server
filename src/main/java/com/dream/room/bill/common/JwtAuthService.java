@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
+import java.util.Date;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -47,13 +49,17 @@ public class JwtAuthService {
 
 
     /**
-     * 创建token，测试用
+     * 创建token
      */
     public String createStringToken(String user) {
         String token = Jwts.builder()
                 .compressWith(CompressionCodecs.DEFLATE)
                 .signWith(SignatureAlgorithm.HS256, config.getSecret())
-                .claim("user", user)
+                .setSubject(user)
+                .setIssuer("bill-server")
+                .setIssuedAt(new Date())
+                .setAudience("bill-client")
+                .setExpiration(Date.from(Instant.now().plusSeconds(2*3600)))
                 .compact();
         return config.getPrefix() + token;
     }
