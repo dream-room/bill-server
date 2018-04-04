@@ -1,6 +1,7 @@
 package com.dream.room.bill.service;
 
 import com.dream.room.bill.common.PageQueryDto;
+import com.dream.room.bill.entity.Component;
 import com.dream.room.bill.entity.Goods;
 import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.repository.ComponentRepository;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -81,6 +83,19 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
     @Transactional
     public List<GoodsComponent> saveGoodsComponents(Long goodsId, List<GoodsComponent> components) {
         goodsComponentRepository.deleteAllByGoodsId(goodsId);
+
+        //补全名称
+        List<Long> ids = components.stream().map(GoodsComponent::getComponentId).collect(Collectors.toList());
+        List<Component> componentInfos = componentRepository.findAllById(ids);
+        components.forEach(item -> {
+            for (Component component: componentInfos){
+                if (component.getId().equals(item.getId())){
+                    item.setComponentName(component.getName());
+                    return;
+                }
+            }
+        });
+
         components.forEach(item -> item.setGoodsId(goodsId));
         List<GoodsComponent> goodsComponents = goodsComponentRepository.saveAll(components);
         BigDecimal allPrice = goodsComponents.stream()
