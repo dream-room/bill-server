@@ -84,13 +84,14 @@ public class GoodsService extends BaseCrudService<Goods,GoodsRepository> {
     public List<GoodsComponent> saveGoodsComponents(Long goodsId, List<GoodsComponent> components) {
         goodsComponentRepository.deleteAllByGoodsId(goodsId);
 
-        //补全名称
+        //补全零件信息
         List<Long> ids = components.stream().map(GoodsComponent::getComponentId).collect(Collectors.toList());
         List<Component> componentInfos = componentRepository.findAllById(ids);
         components.forEach(item -> {
             for (Component component: componentInfos){
-                if (component.getId().equals(item.getId())){
+                if (component.getId().equals(item.getComponentId())){
                     item.setComponentName(component.getName());
+                    item.setPrice(component.getPrice());
                     return;
                 }
             }
