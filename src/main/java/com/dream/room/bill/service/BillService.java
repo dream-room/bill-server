@@ -7,6 +7,8 @@ import com.dream.room.bill.entity.Bill;
 import com.dream.room.bill.entity.BillDetail;
 import com.dream.room.bill.repository.BillDetailRepository;
 import com.dream.room.bill.repository.BillRepository;
+import com.dream.room.bill.repository.GoodsComponentRepository;
+import com.dream.room.bill.repository.GoodsRepository;
 import com.dream.room.bill.service.base.BaseCrudService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Example;
@@ -17,6 +19,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -29,6 +32,10 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
     private BillRepository billRepository;
     @Resource
     private BillDetailRepository billDetailRepository;
+    @Resource
+    private GoodsRepository goodsRepository;
+    @Resource
+    private GoodsComponentRepository goodsComponentRepository;
 
     @Override
     public Bill save(Bill entity) {
@@ -67,6 +74,12 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
             throw BillException.ofBadRequest("订单状态异常", "当前订单状态不可编辑！");
         }
         detail.setStatus(1);
+        goodsRepository.findById(detail.getGoodsId())
+                .ifPresent(item -> detail.setGoodsName(item.getName()));
+        List<String> items = goodsComponentRepository.findAllByGoodsId(detail.getGoodsId()).stream()
+                .map(item -> item.getComponentName() + "(" + item.getPrice() + ")" + "x" + item.getNum())
+                .collect(Collectors.toList());
+        detail.setGoodsDetail(String.join("|",items));
         return billDetailRepository.save(detail);
     }
 
