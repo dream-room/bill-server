@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -55,5 +56,9 @@ public class BillDetail extends BaseEntity {
     @Column(nullable = false, columnDefinition = "tinyint(4) default 1")
     @ApiModelProperty(value = "订单状态 1：编辑中 2：待发货 3：已发货 4：取消发货", required = true)
     private Integer status;
+
+    @Column
+    @ApiModelProperty(value = "订单完成时间（已发货）", readOnly = true)
+    private LocalDateTime doneTime;
 
 }

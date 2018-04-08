@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,9 +32,25 @@ public class Bill extends BaseEntity {
     @ApiModelProperty(value = "订单名称", required = true)
     private String name;
 
+    @Column(nullable = false)
+    @ApiModelProperty(value = "公司", required = true)
+    private String company;
+
     @Column(nullable = false, columnDefinition = "tinyint(4) default 1")
     @ApiModelProperty(value = "订单状态 1：编辑中 2：进行中 3：已完成 4：取消", required = true)
     private Integer status;
+
+    @Column
+    @ApiModelProperty(value = "订单确定时间（由编辑到进行中）", readOnly = true)
+    private LocalDateTime confirmTime;
+
+    @Column
+    @ApiModelProperty(value = "订单完成时间（由进行到完成）", readOnly = true)
+    private LocalDateTime doneTime;
+
+    @Column
+    @ApiModelProperty(value = "最后期盼发货时间")
+    private LocalDateTime lastExpectedTime;
 
     @OneToMany(mappedBy = "billNo")
     @ApiModelProperty(value = "账单明细", readOnly = true)
