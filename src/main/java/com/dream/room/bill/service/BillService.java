@@ -1,5 +1,6 @@
 package com.dream.room.bill.service;
 
+import com.dream.room.bill.common.BillException;
 import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.common.utils.RandomStringUtils;
 import com.dream.room.bill.entity.Bill;
@@ -54,7 +55,26 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
 
     @Transactional
     public void cancel(Long id) {
+        Bill bill = billRepository.findById(id)
+                .orElseThrow(() -> BillException.ofNotFound("订单未找到","请确定该订单是否存在!"));
         billRepository.updateStatus(id,4);
-        billDetailRepository.cancelByBill(id);
+        billDetailRepository.cancelByBill(bill.getNo());
+    }
+
+    public BillDetail saveDetail(String no, BillDetail detail) {
+        Bill bill = billRepository.findByNo(no);
+        if (bill.getStatus() != 1){
+            throw BillException.ofBadRequest("订单状态异常", "当前订单状态不可编辑！");
+        }
+        detail.setStatus(1);
+        return billDetailRepository.save(detail);
+    }
+
+    public void deleteDetail(String no, Long detailId) {
+        Bill bill = billRepository.findByNo(no);
+        if (bill.getStatus() != 1){
+            throw BillException.ofBadRequest("订单状态异常", "当前订单状态不可编辑！");
+        }
+        billDetailRepository.deleteById(detailId);
     }
 }

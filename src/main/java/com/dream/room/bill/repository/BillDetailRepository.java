@@ -17,6 +17,11 @@ public interface BillDetailRepository extends MyCrudRepository<BillDetail> {
     List<BillDetail> findAllByBillNo(String billNo);
 
     @Modifying
-    @Query("update BillDetail set status = 4 where goodsId = :goodsId and status <> 3")
-    int cancelByBill(@Param("goodsId") Long goodsId);
+    @Query("update BillDetail set status = 4 where billNo = :billNo and status <> 3")
+    int cancelByBill(@Param("billNo") String billNo);
+
+    @Modifying
+    @Query("delete from BillDetail where billNo = :billNo and id = :detailId and status = 1")
+    int deleteBillDetail(@Param("billNo") String billNo, @Param("detailId") Long detailId);
+
 }

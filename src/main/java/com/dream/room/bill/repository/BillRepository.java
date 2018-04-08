@@ -16,4 +16,6 @@ public interface BillRepository extends MyCrudRepository<Bill> {
     @Query("update Bill set status = :status where id = :id")
     int updateStatus(@Param("id") Long id, @Param("status") int status);
 
+    Bill findByNo(String no);
+
 }

@@ -65,16 +65,24 @@ public class BillController {
 
     @PostMapping("{no}/detail")
     @ApiOperation(value = "保存账单明细")
-    public List<BillDetail> saveDetails(@PathVariable String no, @RequestBody BillDetail detail) {
-        return billService.findDetails(no);
+    public BillDetail saveDetails(HttpServletResponse response, @PathVariable String no, @RequestBody BillDetail detail) {
+        response.setStatus(HttpStatus.CREATED.value());
+        return billService.saveDetail(no, detail);
     }
 
     @PutMapping("{no}/detail/{detailId}")
     @ApiOperation(value = "修改账单明细")
-    public List<BillDetail> updateDetail(@PathVariable String no, @PathVariable Long detailId,
+    public BillDetail updateDetail(@PathVariable String no, @PathVariable Long detailId,
                                          @RequestBody BillDetail detail) {
         detail.setId(detailId);
-        return billService.findDetails(no);
+        return billService.saveDetail(no, detail);
+    }
+
+    @DeleteMapping("{no}/detail/{detailId}")
+    @ApiOperation(value = "删除账单明细")
+    public void deleteDetail(HttpServletResponse response, @PathVariable String no, @PathVariable Long detailId) {
+        response.setStatus(HttpStatus.NO_CONTENT.value());
+        billService.deleteDetail(no, detailId);
     }
 
 }
