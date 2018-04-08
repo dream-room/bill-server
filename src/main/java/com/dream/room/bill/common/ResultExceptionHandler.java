@@ -6,6 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +40,13 @@ public class ResultExceptionHandler {
                     .status(HttpStatus.BAD_REQUEST)
                     .title("请求数据不合法！")
                     .message(e.getMessage())
+                    .build();
+        }
+        else if (e instanceof BadCredentialsException){
+            result = ErrorResult.builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .title("获取token失败")
+                    .message("请确保用户名密码正确！")
                     .build();
         }
         else {

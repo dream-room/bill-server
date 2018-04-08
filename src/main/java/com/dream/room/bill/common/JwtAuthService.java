@@ -59,7 +59,7 @@ public class JwtAuthService {
                 .setIssuer("bill-server")
                 .setIssuedAt(new Date())
                 .setAudience("bill-client")
-                .setExpiration(Date.from(Instant.now().plusSeconds(2*3600)))
+                .setExpiration(Date.from(Instant.now().plusSeconds(config.getTimeout().getSeconds())))
                 .compact();
         return config.getPrefix() + token;
     }
