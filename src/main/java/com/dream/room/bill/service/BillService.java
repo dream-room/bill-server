@@ -51,21 +51,22 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
         return findAll(Example.of(bill),dto);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        billRepository.findById(id).ifPresent(item -> {
+            if (item.getStatus() != 1){
+                throw BillException.ofBadRequest("订单状态异常", "当前订单状态不可编辑！");
+            }
+            final int i = billDetailRepository.countByBillNo(item.getNo());
+            if (i != 0){
+                throw BillException.ofBadRequest("订单状态异常", "当前订单包含子订单，请删除后再次删除！");
+            }
+        });
+        super.deleteById(id);
+    }
+
     public List<BillDetail> findDetails(String no) {
         return billDetailRepository.findAllByBillNo(no);
-    }
-
-    @Transactional
-    public int updateStatus(Long id, int i) {
-        return billRepository.updateStatus(id,i);
-    }
-
-    @Transactional
-    public void cancel(Long id) {
-        Bill bill = billRepository.findById(id)
-                .orElseThrow(() -> BillException.ofNotFound("订单未找到","请确定该订单是否存在!"));
-        billRepository.updateStatus(id,4);
-        billDetailRepository.cancelByBill(bill.getNo());
     }
 
     public BillDetail saveDetail(String no, BillDetail detail) {
@@ -89,5 +90,18 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
             throw BillException.ofBadRequest("订单状态异常", "当前订单状态不可编辑！");
         }
         billDetailRepository.deleteById(detailId);
+    }
+
+    @Transactional
+    public int updateStatus(Long id, int i) {
+        return billRepository.updateStatus(id,i);
+    }
+
+    @Transactional
+    public void cancel(Long id) {
+        Bill bill = billRepository.findById(id)
+                .orElseThrow(() -> BillException.ofNotFound("订单未找到","请确定该订单是否存在!"));
+        billRepository.updateStatus(id,4);
+        billDetailRepository.cancelByBill(bill.getNo());
     }
 }

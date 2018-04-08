@@ -16,6 +16,8 @@ public interface BillDetailRepository extends MyCrudRepository<BillDetail> {
 
     List<BillDetail> findAllByBillNo(String billNo);
 
+    int countByBillNo(String billNo);
+
     @Modifying
     @Query("update BillDetail set status = 4 where billNo = :billNo and status <> 3")
     int cancelByBill(@Param("billNo") String billNo);

@@ -51,10 +51,10 @@ public class BillController {
     }
 
     @DeleteMapping("{id}")
-    @ApiOperation(value = "取消账单")
-    public void cancel(HttpServletResponse response, @PathVariable Long id){
+    @ApiOperation(value = "删除账单")
+    public void deleteById(HttpServletResponse response, @PathVariable Long id){
         response.setStatus(HttpStatus.NO_CONTENT.value());
-        billService.cancel(id);
+        billService.deleteById(id);
     }
 
     @GetMapping("{no}/detail")
@@ -83,6 +83,12 @@ public class BillController {
     public void deleteDetail(HttpServletResponse response, @PathVariable String no, @PathVariable Long detailId) {
         response.setStatus(HttpStatus.NO_CONTENT.value());
         billService.deleteDetail(no, detailId);
+    }
+
+    @PostMapping("{id}/cancel")
+    @ApiOperation(value = "取消账单")
+    public void cancel(@PathVariable Long id){
+        billService.cancel(id);
     }
 
 }
