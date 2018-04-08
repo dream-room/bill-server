@@ -39,14 +39,15 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         //OPTIONS不拦截
         if ("OPTIONS".equals(httpServletRequest.getMethod().toUpperCase())) {
+            filterChain.doFilter(httpServletRequest,httpServletResponse);
             return;
         }
-
         //部分权限相关的放行
         if (authTokenMatchers.matches(httpServletRequest)){
             filterChain.doFilter(httpServletRequest,httpServletResponse);
             return;
         }
+
         Jws<Claims> token = jwtAuthService.getToken(httpServletRequest);
         if (token == null) {
             httpServletResponse.sendRedirect("/auth/fail");
@@ -55,6 +56,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String subject = token.getBody().getSubject();
         log.error(subject);
         filterChain.doFilter(httpServletRequest,httpServletResponse);
+
     }
 
 }
