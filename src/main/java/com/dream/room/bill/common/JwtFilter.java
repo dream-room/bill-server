@@ -1,11 +1,9 @@
 package com.dream.room.bill.common;
 
-import com.dream.room.bill.common.model.ErrorResult;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -37,6 +35,10 @@ public class JwtFilter extends OncePerRequestFilter {
         //静态资源放行
         if (PathRequest.toStaticResources().atCommonLocations().matches(httpServletRequest)) {
             filterChain.doFilter(httpServletRequest,httpServletResponse);
+            return;
+        }
+        //OPTIONS不拦截
+        if ("OPTIONS".equals(httpServletRequest.getMethod().toUpperCase())) {
             return;
         }
 
