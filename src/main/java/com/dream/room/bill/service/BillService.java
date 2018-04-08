@@ -5,6 +5,7 @@ import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.common.utils.RandomStringUtils;
 import com.dream.room.bill.entity.Bill;
 import com.dream.room.bill.entity.BillDetail;
+import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.repository.BillDetailRepository;
 import com.dream.room.bill.repository.BillRepository;
 import com.dream.room.bill.repository.GoodsComponentRepository;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,12 +77,22 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
             throw BillException.ofBadRequest("订单状态异常", "当前订单状态不可编辑！");
         }
         detail.setStatus(1);
+        //货物名称
         goodsRepository.findById(detail.getGoodsId())
                 .ifPresent(item -> detail.setGoodsName(item.getName()));
-        List<String> items = goodsComponentRepository.findAllByGoodsId(detail.getGoodsId()).stream()
+        //拼接明细
+        final List<GoodsComponent> components = goodsComponentRepository.findAllByGoodsId(detail.getGoodsId());
+        List<String> items = components.stream()
                 .map(item -> item.getComponentName() + "(" + item.getPrice() + ")" + "x" + item.getNum())
                 .collect(Collectors.toList());
         detail.setGoodsDetail(String.join("|",items));
+        //计算总价
+        final BigDecimal total = components.stream()
+                .map(item -> item.getPrice().multiply(new BigDecimal(item.getNum())))
+                .reduce(BigDecimal::add)
+                .orElse(new BigDecimal(0));
+        detail.setTotal(total);
+
         return billDetailRepository.save(detail);
     }
 
