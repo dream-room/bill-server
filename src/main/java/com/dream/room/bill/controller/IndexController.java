@@ -1,6 +1,5 @@
 package com.dream.room.bill.controller;
 
-import com.dream.room.bill.common.BillException;
 import com.dream.room.bill.common.JwtAuthService;
 import com.dream.room.bill.common.model.ErrorResult;
 import com.dream.room.bill.entity.User;
@@ -70,10 +69,14 @@ public class IndexController {
     }
 
     @GetMapping("/auth/fail")
-    @ApiOperation(value = "登陆失败接口")
-    public String authFail(HttpServletResponse response){
+    @ApiOperation(value = "Token验证失败")
+    public ErrorResult authFail(HttpServletResponse response){
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        return "Maybe not auth!";
+        return ErrorResult.builder()
+                .status(HttpStatus.UNAUTHORIZED)
+                .title("Token验证失败")
+                .message("可能Token过期，请重新登录，获取Token！")
+                .build();
     }
 
     @PostMapping("/auth/token")
