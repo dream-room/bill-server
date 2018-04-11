@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -28,7 +28,7 @@ public class ErrorResult {
     private Object object;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private final LocalDateTime time = LocalDateTime.now();
+    private final ZonedDateTime time = ZonedDateTime.now();
 
     @Override
     public String toString(){

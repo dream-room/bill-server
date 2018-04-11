@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -59,6 +59,6 @@ public class BillDetail extends BaseEntity {
 
     @Column
     @ApiModelProperty(value = "订单完成时间（已发货）", readOnly = true)
-    private LocalDateTime doneTime;
+    private ZonedDateTime doneTime;
 
 }
