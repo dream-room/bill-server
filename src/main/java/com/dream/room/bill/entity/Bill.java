@@ -23,7 +23,6 @@ import java.util.List;
 @Entity
 @ApiModel(value = "Bill", description = "账单")
 public class Bill extends BaseEntity {
-
     @Column(unique = true, nullable = false, length = 64)
     @ApiModelProperty(value = "编号", required = true)
     private String no;

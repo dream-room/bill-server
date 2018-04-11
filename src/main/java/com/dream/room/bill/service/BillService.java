@@ -44,6 +44,7 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
         if (StringUtils.isEmpty(entity.getNo())){
             entity.setNo(RandomStringUtils.getNextVal());
         }
+        entity.setStatus(1);
         return super.save(entity);
     }
 
