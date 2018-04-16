@@ -5,7 +5,6 @@ import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.common.utils.RandomStringUtils;
 import com.dream.room.bill.entity.Bill;
 import com.dream.room.bill.entity.BillDetail;
-import com.dream.room.bill.entity.GoodsComponent;
 import com.dream.room.bill.repository.BillDetailRepository;
 import com.dream.room.bill.repository.BillRepository;
 import com.dream.room.bill.repository.GoodsComponentRepository;
@@ -21,7 +20,6 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -79,20 +77,13 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
         }
         detail.setStatus(1);
         //货物名称
-        goodsRepository.findById(detail.getGoodsId())
-                .ifPresent(item -> detail.setGoodsName(item.getName()));
-        //拼接明细
-        final List<GoodsComponent> components = goodsComponentRepository.findAllByGoodsId(detail.getGoodsId());
-        List<String> items = components.stream()
-                .map(item -> item.getComponentName() + "(" + item.getPrice() + ")" + "x" + item.getNum())
-                .collect(Collectors.toList());
-        detail.setGoodsDetail(String.join("|",items));
-        //计算总价
-        final BigDecimal total = components.stream()
-                .map(item -> item.getPrice().multiply(new BigDecimal(item.getNum())))
-                .reduce(BigDecimal::add)
-                .orElse(new BigDecimal(0));
-        detail.setTotal(total);
+        goodsRepository.findById(detail.getGoodsId()).ifPresent(item -> {
+            detail.setGoodsId(detail.getGoodsId());
+            detail.setGoodsVersion(1);
+            detail.setGoodsName(item.getName());
+            detail.setUnitPrice(item.getPrice());
+            detail.setTotal(item.getPrice().multiply(BigDecimal.valueOf(detail.getAmount())));
+        });
 
         return billDetailRepository.save(detail);
     }

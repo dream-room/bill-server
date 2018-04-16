@@ -25,17 +25,17 @@ public class BillDetail extends BaseEntity {
     @ApiModelProperty(value = "订单编号", required = true)
     private String billNo;
 
-    @Column(nullable = false, length = 64)
-    @ApiModelProperty(value = "货物ID", required = true)
+    @Column(nullable = false)
+    @ApiModelProperty(value = "物品ID", required = true)
     private Long goodsId;
 
     @Column(nullable = false)
-    @ApiModelProperty(value = "货物名称", required = true)
-    private String goodsName;
+    @ApiModelProperty(value = "物品版本", readOnly = true)
+    private Integer goodsVersion;
 
-    @Column(columnDefinition = "text")
-    @ApiModelProperty(value = "货物明细", readOnly = true)
-    private String goodsDetail;
+    @Column(nullable = false)
+    @ApiModelProperty(value = "物品名称", readOnly = true)
+    private String goodsName;
 
     @Column(nullable = false)
     @ApiModelProperty(value = "数量", required = true)
