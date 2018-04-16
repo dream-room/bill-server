@@ -62,6 +62,13 @@ public class GoodsArchiveService {
     }
 
     /**
+     * 查询物品档案版本列表
+     */
+    public List<Integer> findVersions(Long goodsId) {
+        return goodsArchiveRepository.findVersionsByGoodsId(goodsId);
+    }
+
+    /**
      * 查询物品档案
      */
     public GoodsArchive findDetail(Long goodsId, Integer goodsVersion) {
@@ -81,5 +88,12 @@ public class GoodsArchiveService {
         history.setVersion(preHistory.getVersion() + 1);
         history.setId(null);
         return goodsArchiveRepository.save(history);
+    }
+
+    /**
+     * 删除物品档案
+     */
+    public void deleteArchive(Long goodsId, Integer goodsVersion) {
+        goodsArchiveRepository.deleteByGoodsIdAndVersion(goodsId,goodsVersion);
     }
 }

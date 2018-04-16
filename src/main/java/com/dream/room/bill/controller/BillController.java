@@ -85,10 +85,34 @@ public class BillController {
         billService.deleteDetail(no, detailId);
     }
 
-    @PostMapping("{id}/cancel")
-    @ApiOperation(value = "取消账单")
+    @PutMapping("{id}/confirm")
+    @ApiOperation(value = "确认账单", notes = "账单编辑完成")
+    public void confirm(@PathVariable Long id){
+        billService.confirm(id);
+    }
+
+    @PutMapping("{id}/complete")
+    @ApiOperation(value = "完成账单", notes = "状态置为完成（所有待发货的明细都将变更为发货状态）")
+    public void complete(@PathVariable Long id){
+        billService.complete(id);
+    }
+
+    @PutMapping("{id}/cancel")
+    @ApiOperation(value = "取消账单", notes = "状态置为取消（已发货除外）")
     public void cancel(@PathVariable Long id){
         billService.cancel(id);
+    }
+
+    @PutMapping("{no}/detail/{detailId}/complete")
+    @ApiOperation(value = "账单明细发货", notes = "将某一明细状态置为发货")
+    public void completeDetail(@PathVariable String no, @PathVariable Long detailId) {
+        billService.completeDetail(no, detailId);
+    }
+
+    @PutMapping("{no}/detail/{detailId}/cancel")
+    @ApiOperation(value = "账单明细取消发货", notes = "将某一明细状态置为取消")
+    public void cancelDetail(@PathVariable String no, @PathVariable Long detailId) {
+        billService.cancelDetail(no, detailId);
     }
 
 }

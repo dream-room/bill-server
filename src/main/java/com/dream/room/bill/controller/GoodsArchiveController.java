@@ -34,6 +34,12 @@ public class GoodsArchiveController {
         return goodsArchiveService.findDetails(goodsId);
     }
 
+    @GetMapping("{goodsId}/versions")
+    @ApiOperation(value = "查询物品档案versions列表")
+    public List<Integer> findVersions(@PathVariable Long goodsId){
+        return goodsArchiveService.findVersions(goodsId);
+    }
+
     @GetMapping("{goodsId}/{goodsVersion}")
     @ApiOperation(value = "查询物品档案")
     public GoodsArchive findDetail(@PathVariable Long goodsId, @PathVariable Integer goodsVersion){
@@ -44,6 +50,13 @@ public class GoodsArchiveController {
     @ApiOperation(value = "回退物品档案", notes = "回退到某一版本的物品档案")
     public GoodsArchive returnVersion(@PathVariable Long goodsId, @PathVariable Integer goodsVersion){
         return goodsArchiveService.returnVersion(goodsId, goodsVersion);
+    }
+
+    @DeleteMapping("{goodsId}/{goodsVersion}")
+    @ApiOperation(value = "删除物品档案", notes = "删除操作具有一定的危险性，已知会导致相关账单明细无法查询到物品档案")
+    public void deleteArchive(HttpServletResponse response, @PathVariable Long goodsId, @PathVariable Integer goodsVersion){
+        response.setStatus(HttpStatus.NO_CONTENT.value());
+        goodsArchiveService.deleteArchive(goodsId, goodsVersion);
     }
 
 }

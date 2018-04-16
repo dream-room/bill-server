@@ -17,7 +17,7 @@ public interface UserRepository extends MyCrudRepository<User> {
      */
     @Modifying
     @Query("update User u set u.password = :password where u.no = :no")
-    int updatePassword(@Param("no") String no,@Param("password") String password);
+    int updatePassword(@Param("no") String no, @Param("password") String password);
 
     User findByNo(String no);
 

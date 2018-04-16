@@ -54,7 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         String subject = token.getBody().getSubject();
-        log.error(subject);
+        log.info(subject + ":" + token.getBody().getIssuedAt().toString());
         filterChain.doFilter(httpServletRequest,httpServletResponse);
 
     }
