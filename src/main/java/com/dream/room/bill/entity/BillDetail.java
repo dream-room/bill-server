@@ -42,7 +42,7 @@ public class BillDetail extends BaseEntity {
     private Integer amount;
 
     @Column(nullable = false,  precision = 7, scale = 2)
-    @ApiModelProperty(value = "单价", required = true)
+    @ApiModelProperty(value = "单价")
     private BigDecimal unitPrice;
 
     @Column(nullable = false,  precision = 9, scale = 2)
@@ -50,11 +50,11 @@ public class BillDetail extends BaseEntity {
     private BigDecimal total;
 
     @Column(nullable = false, columnDefinition = "tinyint(4) default 5")
-    @ApiModelProperty(value = "优先级（1-9），越小优先级越高，默认5", required = true)
+    @ApiModelProperty(value = "优先级（1-9），越小优先级越高，默认5")
     private Integer priority;
 
     @Column(nullable = false, columnDefinition = "tinyint(4) default 1")
-    @ApiModelProperty(value = "订单状态 1：编辑中 2：待发货 3：已发货 4：取消发货", required = true)
+    @ApiModelProperty(value = "订单状态 1：编辑中 2：待发货 3：已发货 4：取消发货", readOnly = true)
     private Integer status;
 
     @Column
