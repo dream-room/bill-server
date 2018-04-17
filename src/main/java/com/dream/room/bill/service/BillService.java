@@ -21,7 +21,6 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -132,10 +131,7 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
     public void confirm(Long id) {
         Bill bill = billRepository.findById(id)
                 .orElseThrow(() -> BillException.ofNotFound("订单未找到","请确定该订单是否存在!"));
-        bill.setConfirmTime(ZonedDateTime.now());
-        bill.setStatus(2);
-        billRepository.save(bill);
-        //billRepository.updateStatus(id,2);
+        billRepository.confirmStatus(id, Instant.now());
         billDetailRepository.confirmByBill(bill.getNo());
     }
 
@@ -146,10 +142,7 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
     public void complete(Long id) {
         Bill bill = billRepository.findById(id)
                 .orElseThrow(() -> BillException.ofNotFound("订单未找到","请确定该订单是否存在!"));
-        bill.setDoneTime(ZonedDateTime.now());
-        bill.setStatus(3);
-        billRepository.save(bill);
-        //billRepository.updateStatus(id,3);
+        billRepository.completeStatus(id, Instant.now());
         billDetailRepository.completeByBill(bill.getNo(), Instant.now());
     }
 
