@@ -48,7 +48,7 @@ release-deploy:
   stage: deploy
   script:
     - scp target/bill-server.jar ubuntu@119.28.1.107:bill
-    - ssh ubuntu@119.28.1.107 "cd bill; pgrep -l bill-server; pkill bill-server; nohup java -jar bill-server.jar &"
+    - ssh ubuntu@119.28.1.107 "cd bill; sh bill-start.sh"
   only:
     - /^release-.*$/
 
