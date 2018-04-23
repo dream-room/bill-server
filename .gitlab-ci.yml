@@ -1,10 +1,10 @@
-image: maven:3.5.2-jdk-8
-
 stages:
   - build
+  - deploy
 #  - package
 
 release-build:
+  image: maven:3.5.2-jdk-8
   stage: build
   script: "mvn package -B -Dmaven.test.skip=true"
   artifacts:
@@ -12,4 +12,17 @@ release-build:
       - target/bill-server.jar
   only:
     - /^release-.*$/
+
+release-deploy:
+  stage: deploy
+  script:
+    - cp target/bill-server.jar /home/bill
+    - cd /home/bill
+    - pgrep -l bill-server
+    - pkill bill-server
+    - nohup java -jar bill-server.jar &
+  only:
+    - /^release-.*$/
+  tags:
+    - mrtt
 
