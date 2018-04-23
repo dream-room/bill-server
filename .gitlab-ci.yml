@@ -49,6 +49,9 @@ release-deploy:
   script:
     - scp target/bill-server.jar ubuntu@119.28.1.107:bill
     - ssh ubuntu@119.28.1.107
+    - ls -a
+    - cd ~
+    - ls -a
     - cd bill
     - pgrep -l bill-server
     - pkill bill-server
