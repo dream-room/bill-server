@@ -16,7 +16,7 @@ release-build:
 release-deploy:
   stage: deploy
   script:
-    - cp target/bill-server.jar /home/bill
+    - sudo cp target/bill-server.jar /home/bill
     - cd /home/bill
     - pgrep -l bill-server
     - pkill bill-server
