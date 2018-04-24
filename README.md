@@ -11,3 +11,6 @@
 ## Jwt
 For test, perpetual token:      
 Bearer eyJhbGciOiJIUzI1NiIsInppcCI6IkRFRiJ9.eNqqViouTVKyUkpMyc3MU9JRyiwuBvKSMnNydItTi8pSi0BiiSVKVoamRkbm5gYGpkY6SomlKTBFyTmZqXklSrUAAAAA__8.QvY4naA4huMqBS_yUduieqa9LcRT2z37mdJuiQONmio
+
+## Release branches with GitLab flow
+<https://about.gitlab.com/2014/09/29/gitlab-flow/>
