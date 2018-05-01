@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         Jws<Claims> token = jwtAuthService.getToken(httpServletRequest);
         if (token == null) {
-            httpServletResponse.sendRedirect("/auth/fail");
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/auth/fail");
             return;
         }
         String subject = token.getBody().getSubject();
