@@ -1,6 +1,6 @@
 package com.dream.room.bill.controller;
 
-import com.dream.room.bill.common.PageQueryDto;
+import com.dream.room.bill.dto.BillDto;
 import com.dream.room.bill.entity.Bill;
 import com.dream.room.bill.entity.BillDetail;
 import com.dream.room.bill.service.BillService;
@@ -32,7 +32,7 @@ public class BillController {
 
     @GetMapping
     @ApiOperation(value = "查询账单信息", notes = "分页查询")
-    public Page<Bill> findAll(PageQueryDto dto) {
+    public Page<Bill> findAll(BillDto dto) {
         return billService.findAll(dto);
     }
 

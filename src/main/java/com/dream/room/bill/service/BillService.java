@@ -1,8 +1,8 @@
 package com.dream.room.bill.service;
 
 import com.dream.room.bill.common.BillException;
-import com.dream.room.bill.common.PageQueryDto;
 import com.dream.room.bill.common.utils.RandomStringUtils;
+import com.dream.room.bill.dto.BillDto;
 import com.dream.room.bill.entity.Bill;
 import com.dream.room.bill.entity.BillDetail;
 import com.dream.room.bill.entity.GoodsArchive;
@@ -11,16 +11,19 @@ import com.dream.room.bill.repository.BillRepository;
 import com.dream.room.bill.repository.GoodsArchiveRepository;
 import com.dream.room.bill.repository.GoodsRepository;
 import com.dream.room.bill.service.base.BaseCrudService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,10 +57,27 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
     /**
      * 查询账单
      */
-    public Page<Bill> findAll(PageQueryDto dto) {
-        Bill bill = new Bill();
-        BeanUtils.copyProperties(dto,bill);
-        return findAll(Example.of(bill),dto);
+    public Page<Bill> findAll(BillDto dto) {
+        Specification<Bill> specification = (Specification<Bill>) (root, criteriaQuery, criteriaBuilder) ->{
+            List<Predicate> predicates = new ArrayList<>();
+            if (!StringUtils.isEmpty(dto.getNo()))
+                predicates.add(criteriaBuilder.equal(root.get("no"), dto.getNo()));
+            if (!StringUtils.isEmpty(dto.getName()))
+                predicates.add(criteriaBuilder.like(root.get("name"),dto.getName()+"%"));
+            if (!StringUtils.isEmpty(dto.getCompany()))
+                predicates.add(criteriaBuilder.like(root.get("company"),dto.getCompany()+"%"));
+            if (dto.getStatus() != null)
+                predicates.add(criteriaBuilder.equal(root.get("status"),dto.getStatus()));
+            if (dto.getStartTime() != null && dto.getEndTime() != null)
+                predicates.add(criteriaBuilder.between(root.get("createTime"),dto.getStartTime(),dto.getEndTime()));
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+        if (StringUtils.isEmpty(dto.getSort())){
+            return billRepository.findAll(specification, PageRequest.of(dto.getPage(), dto.getSize()));
+        }
+        Sort.Direction direction = "desc".equals(dto.getDirection())?Sort.Direction.DESC:Sort.Direction.ASC;
+        Sort sort = Sort.by(direction, dto.getSort());
+        return billRepository.findAll(specification,PageRequest.of(dto.getPage(),dto.getSize(),sort));
     }
 
     /**
