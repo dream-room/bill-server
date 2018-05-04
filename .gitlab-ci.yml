@@ -1,6 +1,14 @@
 stages:
+  - test
   - build
   - deploy
+
+test:
+  image: maven:3.5.2-jdk-8
+  stage: test
+  script: "mvn test"
+  only:
+    - /^release-.*$/
 
 release-build:
   image: maven:3.5.2-jdk-8
@@ -10,7 +18,7 @@ release-build:
     paths:
       - target/bill-server.jar
   only:
-    - /^release-.*$/
+    - tags
 
 release-deploy:
   image: ubuntu
@@ -41,11 +49,11 @@ release-deploy:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
 
-    - ssh-keyscan 119.28.1.107 >> ~/.ssh/known_hosts
+    - ssh-keyscan $KNOWN_HOST >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - scp target/bill-server.jar ubuntu@119.28.1.107:bill
-    - ssh ubuntu@119.28.1.107 "cd bill; sh bill-start.sh"
+    - scp target/bill-server.jar root@$KNOWN_HOST:bill
+    - ssh root@$KNOWN_HOST "cd bill; sh bill-start.sh"
 
   only:
-    - /^release-.*$/
+    - tags
 
