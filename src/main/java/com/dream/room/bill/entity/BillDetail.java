@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
@@ -18,6 +20,9 @@ import java.time.ZonedDateTime;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Table(indexes = {
+        @Index(name = "key_bill_no", columnList = "billNo")
+})
 @ApiModel(value = "BillDetail", description = "账单明细")
 public class BillDetail extends BaseEntity {
 

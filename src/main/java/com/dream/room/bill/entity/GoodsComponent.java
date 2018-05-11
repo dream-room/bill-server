@@ -7,6 +7,8 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -19,9 +21,10 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Entity
-/*@Table(indexes = {
-        @Index(name = "un_goods_component", columnList = "goodsId,componentId", unique = true)
-})*/
+@Table(indexes = {
+        //@Index(name = "un_goods_component", columnList = "goodsId,componentId", unique = true),
+        @Index(name = "key_goods_id", columnList = "goodsId")
+})
 @ApiModel(value = "GoodsComponent", description = "物品零件关联表")
 public class GoodsComponent extends BaseEntity {
 

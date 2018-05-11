@@ -9,9 +9,7 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 /**
  * Created by MrTT (jiang.taojie@foxmail.com)
@@ -51,8 +49,8 @@ public class Bill extends BaseEntity {
     @ApiModelProperty(value = "最后期盼发货时间")
     private ZonedDateTime lastExpectedTime;
 
-    @OneToMany(mappedBy = "billNo")
+    /*@OneToMany(mappedBy = "billNo")
     @ApiModelProperty(value = "账单明细", readOnly = true)
-    private List<BillDetail> details;
+    private List<BillDetail> details;*/
 
 }
