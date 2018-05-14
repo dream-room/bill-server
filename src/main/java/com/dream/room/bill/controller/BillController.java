@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -38,8 +37,8 @@ public class BillController {
 
     @PostMapping
     @ApiOperation(value = "添加/修改账单")
-    public Bill save(HttpServletResponse response, @RequestBody Bill bill){
-        response.setStatus(HttpStatus.CREATED.value());
+    @ResponseStatus(HttpStatus.CREATED)
+    public Bill save(@RequestBody Bill bill){
         return billService.save(bill);
     }
 
@@ -52,8 +51,8 @@ public class BillController {
 
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除账单")
-    public void deleteById(HttpServletResponse response, @PathVariable Long id){
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id){
         billService.deleteById(id);
     }
 
@@ -65,8 +64,8 @@ public class BillController {
 
     @PostMapping("{no}/detail")
     @ApiOperation(value = "保存账单明细")
-    public BillDetail saveDetails(HttpServletResponse response, @PathVariable String no, @RequestBody BillDetail detail) {
-        response.setStatus(HttpStatus.CREATED.value());
+    @ResponseStatus(HttpStatus.CREATED)
+    public BillDetail saveDetails(@PathVariable String no, @RequestBody BillDetail detail) {
         return billService.saveDetail(no, detail);
     }
 
@@ -80,8 +79,8 @@ public class BillController {
 
     @DeleteMapping("{no}/detail/{detailId}")
     @ApiOperation(value = "删除账单明细")
-    public void deleteDetail(HttpServletResponse response, @PathVariable String no, @PathVariable Long detailId) {
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteDetail(@PathVariable String no, @PathVariable Long detailId) {
         billService.deleteDetail(no, detailId);
     }
 

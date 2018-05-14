@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -43,8 +42,8 @@ public class ComponentController {
 
     @PostMapping
     @ApiOperation(value = "添加/修改零件")
-    public Component save(HttpServletResponse response, @RequestBody Component component){
-        response.setStatus(HttpStatus.CREATED.value());
+    @ResponseStatus(HttpStatus.CREATED)
+    public Component save(@RequestBody Component component){
         return componentService.save(component);
     }
 
@@ -57,8 +56,8 @@ public class ComponentController {
 
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除零件")
-    public void deleteById(HttpServletResponse response, @PathVariable Long id){
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id){
         componentService.deleteById(id);
     }
 

@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -38,8 +37,8 @@ public class GoodsController {
 
     @PostMapping
     @ApiOperation(value = "添加/修改物品")
-    public Goods save(HttpServletResponse response, @RequestBody Goods goods){
-        response.setStatus(HttpStatus.CREATED.value());
+    @ResponseStatus(HttpStatus.CREATED)
+    public Goods save(@RequestBody Goods goods){
         return goodsService.save(goods);
     }
 
@@ -52,8 +51,8 @@ public class GoodsController {
 
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除物品")
-    public void deleteById(HttpServletResponse response, @PathVariable Long id){
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id){
         goodsService.deleteById(id);
     }
 

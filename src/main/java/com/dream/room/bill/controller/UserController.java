@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +43,8 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value = "添加/修改用户")
-    public User save(HttpServletResponse response, @RequestBody User user){
-        response.setStatus(HttpStatus.CREATED.value());
+    @ResponseStatus(HttpStatus.CREATED)
+    public User save(@RequestBody User user){
         return userService.save(user);
     }
 
@@ -58,8 +57,8 @@ public class UserController {
 
     @DeleteMapping("{id}")
     @ApiOperation(value = "删除用户")
-    public void deleteById(HttpServletResponse response, @PathVariable Long id){
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById(@PathVariable Long id){
         userService.deleteById(id);
     }
 

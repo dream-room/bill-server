@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -23,8 +22,8 @@ public class GoodsArchiveController {
 
     @PostMapping("{goodsId}/generate")
     @ApiOperation(value = "生成物品档案")
-    public GoodsArchive generate(HttpServletResponse response, @PathVariable Long goodsId){
-        response.setStatus(HttpStatus.CREATED.value());
+    @ResponseStatus(HttpStatus.CREATED)
+    public GoodsArchive generate(@PathVariable Long goodsId){
         return goodsArchiveService.generate(goodsId);
     }
 
@@ -54,8 +53,8 @@ public class GoodsArchiveController {
 
     @DeleteMapping("{goodsId}/{goodsVersion}")
     @ApiOperation(value = "删除物品档案", notes = "删除操作具有一定的危险性，已知会导致相关账单明细无法查询到物品档案")
-    public void deleteArchive(HttpServletResponse response, @PathVariable Long goodsId, @PathVariable Integer goodsVersion){
-        response.setStatus(HttpStatus.NO_CONTENT.value());
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteArchive(@PathVariable Long goodsId, @PathVariable Integer goodsVersion){
         goodsArchiveService.deleteArchive(goodsId, goodsVersion);
     }
 
