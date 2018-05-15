@@ -22,7 +22,6 @@ import java.time.ZonedDateTime;
 public class ErrorResult {
 
     private HttpStatus status;
-    private String code;
     private String title;
     private String message;
     private Object object;
@@ -38,7 +37,6 @@ public class ErrorResult {
         }
         StringBuilder builder = new StringBuilder("STATUS:");
         builder.append(here.getReasonPhrase());
-        builder.append(" CODE:").append(StringUtils.isEmpty(code)?here.value():code);
         if (!StringUtils.isEmpty(title)){
             builder.append(" TITLE:").append(title);
         }

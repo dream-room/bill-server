@@ -1,6 +1,6 @@
 package com.dream.room.bill;
 
-import com.dream.room.bill.common.JwtAuthService;
+import com.dream.room.bill.common.jwt.JwtAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

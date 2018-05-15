@@ -1,4 +1,4 @@
-package com.dream.room.bill.common;
+package com.dream.room.bill.common.jwt;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -6,8 +6,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,46 +18,61 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class ResultExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
     @ResponseBody
-    public ResponseEntity<ErrorResult> handle(RuntimeException e){
+    @ExceptionHandler(BillException.class)
+    public ResponseEntity<ErrorResult> handle(BillException e){
         log.error(e.getMessage());
-        ErrorResult result;
-        if (e instanceof BillException){
-            result = ((BillException) e).getResult();
-        }
-        else if (e instanceof DataIntegrityViolationException){
-            result = ErrorResult.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .title("请求数据重复！")
-                    .message(e.getMessage())
-                    .build();
-        }
-        else if (e instanceof HttpMessageNotReadableException){
-            result = ErrorResult.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .title("请求数据不合法！")
-                    .message(e.getMessage())
-                    .build();
-        }
-        else if (e instanceof BadCredentialsException){
-            result = ErrorResult.builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .title("获取token失败")
-                    .message("请确保用户名密码正确！")
-                    .build();
-        }
-        else {
-            result = ErrorResult.builder()
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .title("系统异常！")
-                    .message(e.getMessage())
-                    .build();
-        }
-        if (StringUtils.isEmpty(result.getCode())){
-            result.setCode(result.getStatus().toString());
-        }
+        ErrorResult result = e.getResult();
         return new ResponseEntity<>(result, result.getStatus());
     }
+
+    @ResponseBody
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResult> handle(RuntimeException e){
+        log.error(e.getMessage());
+        ErrorResult result  = ErrorResult.builder()
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .title("系统异常！")
+                .message(e.getMessage())
+                .build();
+        return new ResponseEntity<>(result, result.getStatus());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResult> handle(HttpMessageNotReadableException e){
+        log.error(e.getMessage());
+        ErrorResult result = ErrorResult.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .title("请求数据不合法！")
+                .message(e.getMessage())
+                .build();
+        return new ResponseEntity<>(result, result.getStatus());
+    }
+
+    @ResponseBody
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResult> handle(DataIntegrityViolationException e){
+        log.error(e.getMessage());
+        ErrorResult result = ErrorResult.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .title("请求数据重复！")
+                .message(e.getMessage())
+                .build();
+        return new ResponseEntity<>(result, result.getStatus());
+    }
+
+    /*@ResponseBody
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResult> handle(BadCredentialsException e){
+        log.error(e.getMessage());
+        ErrorResult result;
+        result = ErrorResult.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .title("获取token失败")
+                .message("请确保用户名密码正确！")
+                .build();
+        return new ResponseEntity<>(result, result.getStatus());
+    }*/
 
 }

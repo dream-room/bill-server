@@ -1,8 +1,9 @@
-package com.dream.room.bill.common;
+package com.dream.room.bill.common.jwt;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +34,15 @@ public class JwtAuthService {
 
     public Jws<Claims> getToken(HttpServletRequest request) {
         String token = request.getHeader(config.getHeader());
+        return getToken(token);
+    }
+
+    public Jws<Claims> getToken(WebRequest webRequest) {
+        String token = webRequest.getHeader(config.getHeader());
+        return getToken(token);
+    }
+
+    public Jws<Claims> getToken(String token) {
         if (token == null || !token.startsWith(config.getPrefix())) {
             return null;
         }
@@ -46,7 +56,6 @@ public class JwtAuthService {
         }
         return null;
     }
-
 
     /**
      * 创建token
@@ -63,5 +72,4 @@ public class JwtAuthService {
                 .compact();
         return config.getPrefix() + token;
     }
-
 }

@@ -1,14 +1,12 @@
 package com.dream.room.bill.controller;
 
-import com.dream.room.bill.common.JwtAuthService;
+import com.dream.room.bill.common.BillException;
+import com.dream.room.bill.common.jwt.JwtAuthService;
 import com.dream.room.bill.common.model.ErrorResult;
 import com.dream.room.bill.entity.User;
+import com.dream.room.bill.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -23,45 +21,28 @@ import java.util.Map;
 public class IndexController {
 
     @Resource
-    private AuthenticationManager authenticationManager;
-    @Resource
     private JwtAuthService jwtAuthService;
+
+    @Resource
+    private UserService userService;
 
     @GetMapping("/")
     public Map<String,String> ok(){
         Map<String,String> map = new HashMap<>();
         map.put("info","Server run okay!");
         map.put("auth-token","/auth/token");
-        map.put("rest-principal","/login/principal");
         map.put("doc-url","/swagger-ui.html");
         return map;
     }
 
-    @PostMapping("/login/rest")
-    @ApiOperation(value = "Rest登录接口")
-    public String login(@RequestBody User user){
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getNo(),user.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(token);
-        if (authenticate.isAuthenticated()){
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
-            return "success";
+    @PostMapping("/auth/token")
+    @ApiOperation(value = "获取token接口")
+    public String authToken(@RequestBody User user){
+        boolean flag = userService.login(user);
+        if (flag) {
+            return jwtAuthService.createStringToken("admin");
         }
-        return "fail";
-    }
-
-    @PostMapping("/login/principal")
-    @ApiOperation(value = "Rest获取登录用户接口")
-    public Map<String,Object> check(){
-        Map<String,Object> map = new HashMap<>();
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if ("anonymousUser".equals(principal)){
-            map.put("authentication","false");
-            map.put("principal","anonymousUser");
-            return map;
-        }
-        map.put("authentication","true");
-        map.put("principal", principal);
-        return map;
+        throw BillException.of(HttpStatus.BAD_REQUEST, "获取token失败", "请确保用户名密码正确！");
     }
 
     @GetMapping("/auth/fail")
@@ -73,22 +54,6 @@ public class IndexController {
                 .title("Token验证失败")
                 .message("可能Token过期，请重新登录，获取Token！")
                 .build();
-    }
-
-    @PostMapping("/auth/token")
-    @ApiOperation(value = "获取token接口")
-    public String authToken(@RequestBody User user){
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getNo(),user.getPassword());
-        Authentication authenticate = authenticationManager.authenticate(token);
-        if (authenticate.isAuthenticated()){
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
-            return jwtAuthService.createStringToken("admin");
-        }
-        throw ErrorResult.builder()
-                .status(HttpStatus.BAD_REQUEST)
-                .title("获取token失败")
-                .message("请确保用户名密码正确！")
-                .build().toException();
     }
 
 }

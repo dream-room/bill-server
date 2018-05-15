@@ -33,4 +33,9 @@ public class UserService extends BaseCrudService<User,UserRepository> {
         return userRepository.updatePassword(no,password);
     }
 
+    public boolean login(User loginUser) {
+        User dataUser = userRepository.findByNo(loginUser.getNo());
+        //todo md5
+        return dataUser.getPassword().equals(loginUser.getPassword());
+    }
 }
