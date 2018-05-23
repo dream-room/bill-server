@@ -199,11 +199,11 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
     }
 
     public long countBillDelivery() {
-        return billRepository.countByStatusAndLastExpectedTimeLessThanEqual(2, Instant.now());
+        return billRepository.countByStatusAndLastExpectedTimeLessThanEqual(2, ZonedDateTime.now());
     }
 
     public long countBillMonthlyDone() {
-        Instant mon = ZonedDateTime.now().withDayOfMonth(1).toInstant();
+        ZonedDateTime mon = ZonedDateTime.now().withDayOfMonth(1);
         return billRepository.countByStatusAndDoneTimeGreaterThanEqual(3, mon);
     }
 
