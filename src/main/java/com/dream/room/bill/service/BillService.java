@@ -23,6 +23,7 @@ import javax.annotation.Resource;
 import javax.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -192,4 +193,18 @@ public class BillService extends BaseCrudService<Bill,BillRepository> {
         }
         billDetailRepository.updateStatus(detailId, 4);
     }
+
+    public long countBillHandling() {
+        return billRepository.countByStatus(2);
+    }
+
+    public long countBillDelivery() {
+        return billRepository.countByStatusAndLastExpectedTimeLessThanEqual(2, Instant.now());
+    }
+
+    public long countBillMonthlyDone() {
+        Instant mon = ZonedDateTime.now().withDayOfMonth(1).toInstant();
+        return billRepository.countByStatusAndDoneTimeGreaterThanEqual(3, mon);
+    }
+
 }

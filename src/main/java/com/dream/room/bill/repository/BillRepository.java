@@ -28,4 +28,11 @@ public interface BillRepository extends MyCrudRepository<Bill>,JpaSpecificationE
     @Modifying
     @Query("update Bill set status = 3, doneTime = :now where id = :id and status = 2")
     int completeStatus(@Param("id") Long id, @Param("now") Instant now);
+
+    long countByStatusAndLastExpectedTimeLessThanEqual(Integer status, Instant time);
+
+    long countByStatus(Integer status);
+
+    long countByStatusAndDoneTimeGreaterThanEqual(Integer status, Instant time);
+
 }

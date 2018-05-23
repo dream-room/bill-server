@@ -5,11 +5,11 @@
 
 	<groupId>com.dream.room</groupId>
 	<artifactId>bill</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>bill</name>
-	<description>Demo project for Spring Boot</description>
+	<description>A project for bill server</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
